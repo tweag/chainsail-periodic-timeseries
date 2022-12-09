@@ -1,5 +1,6 @@
 """
-Probability density of a Gaussian mixture defined by a Stan model
+Chainsail-compatible versions of the original model in
+https://discourse.mc-stan.org/t/ideas-for-modelling-a-periodic-timeseries/22038
 """
 from dataclasses import dataclass
 
@@ -113,15 +114,19 @@ class ManualPDF(PDF):
     def log_prob_gradient(self, _: np.ndarray) -> None:
         pass
 
-from chainsail_helpers.pdf.stan import StanPDF
 
-with open("chainsail_compatible_model.stan") as f:
-    model_code = f.read()
-data = np.loadtxt("data.csv", delimiter=",", skiprows=1)
+if True:
+    # Use httpstan to compile Stan model and evaluate log prob and its gradient
+    from chainsail_helpers.pdf.stan import StanPDF
 
+    with open("chainsail_compatible_model.stan") as f:
+        model_code = f.read()
+    data = np.loadtxt("data.csv", delimiter=",", skiprows=1)
 
-pdf = StanPDF(model_code,{"n": len(data), "x": data[:,0].tolist(), "y": data[:,1].tolist()})
+    pdf = StanPDF(model_code,{"n": len(data), "x": data[:,0].tolist(), "y": data[:,1].tolist()})
+else:
+    # Use the above, likely incorrect from-scratch implementation of the model
+    pdf = ManualPDF("data.csv")
 
-# pdf = ManualPDF("data.csv")
-initial_states = np.random.uniform(-2, 2, size=4)
+    
 initial_states = np.array([-2.13, 1.738, 0.0142, 1.418])
