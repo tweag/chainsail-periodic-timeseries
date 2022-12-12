@@ -1,0 +1,26 @@
+{
+    "tempered_dist_family": "boltzmann",
+    "probability_definition": "wedon'tneedthat",
+    "max_replicas": 20,
+    "initial_number_of_replicas": 7,
+    "initial_schedule_parameters": {
+        "minimum_beta": 0.001
+    },
+    "optimization_parameters": {
+        "optimization_quantity_target": 0.2,
+	"decrement": 0.001,
+	"min_param": 0.001
+    },
+    "replica_exchange_parameters": {
+	"num_optimization_samples": 5000,
+	"num_production_samples": 30000,
+	"dump_interval": 500,
+	"status_interval": 500,
+	"swap_interval": 5
+    },
+    "local_sampler": "naive_hmc",
+    "local_sampling_parameters": {
+	"num_steps": 10,
+	"num_adaption_samples": 500
+    }
+}
