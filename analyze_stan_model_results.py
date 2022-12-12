@@ -136,7 +136,7 @@ sr_pacc_ax.set_xlabel("replica")
 sr_pacc_ax.set_ylabel("acceptance rate")
 clean_trace_axis(sr_pacc_ax)
 
-schedule_ax, not_needed_ax = next(axes_pair_iter)
+schedule_ax, log_prob_ax = next(axes_pair_iter)
 betas = schedule['beta']
 xticks = list(range(1, len(betas) + 1))
 schedule_ax.plot(xticks, betas, marker="s", ls="")
@@ -145,7 +145,23 @@ schedule_ax.set_xticks(xticks)
 schedule_ax.set_xlabel("replica")
 schedule_ax.set_ylabel("inverse\ntemperature")
 clean_trace_axis(schedule_ax)
-not_needed_ax.set_visible(False)
+
+energies = []
+for i in range(0, 30000, 500):
+    try:
+        path = os.path.join(results_dir, "energies", f"energies_replica1_{i}-{i+500}.pickle")
+        with open(path, "rb") as f:
+            energy_batch = pickle.load(f)
+        energies += energy_batch.tolist()
+    except FileNotFoundError:
+        break
+log_prob_ax.plot(energies)
+xticks = np.arange(0, len(energies))[::500]
+log_prob_ax.set_xticks(xticks)
+log_prob_ax.set_xticklabels(xticks * 5)
+log_prob_ax.set_xlabel("MCMC samples")
+log_prob_ax.set_ylabel("negative log-prob\nof target distribution")
+clean_trace_axis(log_prob_ax)
 
 fig.tight_layout()
     
