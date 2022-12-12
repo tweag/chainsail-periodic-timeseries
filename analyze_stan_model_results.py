@@ -89,7 +89,8 @@ for param in parameters:
     hist_ax.hist(param.transformed_values, bins=param.num_bins)
     trace_ax.plot(param.transformed_values)
     hist_ax.set_xlabel(param.label)
-    trace_ax.set_xlabel(param.label)
+    trace_ax.set_xlabel("MCMC samples")
+    trace_ax.set_ylabel(param.label)
     clean_hist_axis(hist_ax)
     clean_trace_axis(trace_ax)
     
