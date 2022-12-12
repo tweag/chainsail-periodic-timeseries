@@ -15,4 +15,4 @@ For now, this repository contains
   - single-replica stepsizes and acceptance rates.
   
   It expects a Chainsail simulation run directory as its only command line argument. It depends on `matplotlib`, `numpy`, and `chainsail-helpers`. All dependencies can are provided via a [Nix](https://nixos.org) shell in `shell.nix`.
-- `sampling_results.png`: an example figure of results of a Chainsail run that uses the `httpstan`-backed model definition
+- `sampling_results_{rwmc,hmc}_beta{beta_min}.png`: example figures Chainsail run results that use the `httpstan`-backed model definition. `rwmc` refers to a simple Metropolis algorithm for local sampling, and `hmc` to our naïve HMC implementation. `beta_min` is the inverse temperature of the "hottest" replica.
