@@ -123,7 +123,7 @@ if True:
         model_code = f.read()
     data = np.loadtxt("data.csv", delimiter=",", skiprows=1)
 
-    pdf = StanPDF(model_code,{"n": len(data), "x": data[:,0].tolist(), "y": data[:,1].tolist()})
+    pdf = StanPDF(model_code,{"n": len(data), "x": data[:,0].tolist(), "y": data[:,2].tolist()})
 else:
     # Use the above, likely incorrect from-scratch implementation of the model
     pdf = ManualPDF("data.csv")
