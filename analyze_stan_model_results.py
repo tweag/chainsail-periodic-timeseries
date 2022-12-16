@@ -21,6 +21,14 @@ parser.add_argument(
     type=str,
     help='Simulation run, e.g. "/some/path/to/production_run"'
 )
+parser.add_argument(
+    "replica",
+    type=int,
+    default=1,
+    help=('Number of replica for which to concatenate samples. "1" is the target'
+          'distribution, and higher numbers correspond to higher temperature / '
+          'flatter replicas')
+)
 args = parser.parse_args()
 
 results_dir = args.simulation_run
@@ -163,6 +171,7 @@ log_prob_ax.set_xlabel("MCMC samples")
 log_prob_ax.set_ylabel("negative log-prob\nof target distribution")
 clean_trace_axis(log_prob_ax)
 
+fig.suptitle(fr"Replica #{args.replica} at $\beta$={betas[args.replica - 1]}")
 fig.tight_layout()
     
 plt.show()

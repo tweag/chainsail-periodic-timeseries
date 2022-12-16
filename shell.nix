@@ -9,6 +9,18 @@ let
   };
   chainsailHelpers = pkgs.lib.callPackageWith pkgs.python310Packages
     (chainsailHelpersSrc + "/examples/nix/chainsail_helpers.nix") { };
-  pythonBundle =
-    python310.withPackages (ps: with ps; [ matplotlib numpy chainsailHelpers ]);
+  # override to use GitHub as source: we need a newer feature (replica option for
+  # concatenate-samples script) which is not on PyPi yet.
+  chainsailHelpersFeature = chainsailHelpers.overridePythonAttrs (old: {
+    src = fetchFromGitHub {
+      owner = "tweag";
+      repo = "chainsail-resources";
+      rev = "5c0ae9e8426bb5bee9d0830f0617bb6747090b32";
+      sha256 = "jF8qnTe2LNdUqLpQXnFrMrut9z128yYnAIF6e7LXT8M=";
+    } + "/chainsail_helpers/";
+    format = "pyproject";
+    nativeBuildInputs = old.nativeBuildInputs or [ python310Packages.poetry ];
+  });
+  pythonBundle = python310.withPackages
+    (ps: with ps; [ matplotlib numpy chainsailHelpersFeature ]);
 in mkShell { buildInputs = [ pythonBundle ]; }
