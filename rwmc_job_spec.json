@@ -4,12 +4,12 @@
     "max_replicas": 20,
     "initial_number_of_replicas": 7,
     "initial_schedule_parameters": {
-        "minimum_beta": 0.0001
+        "minimum_beta": 0.00001
     },
     "optimization_parameters": {
         "optimization_quantity_target": 0.2,
-	"decrement": 0.0001,
-	"min_param": 0.0001
+	"decrement": 0.00001,
+	"min_param": 0.00001
     },
     "replica_exchange_parameters": {
 	"num_optimization_samples": 5000,
