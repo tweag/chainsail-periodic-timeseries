@@ -117,6 +117,28 @@ class ManualPDF(PDF):
         pass
 
 
+class BridgeStanPDF(PDF):
+    def __init__(self, model: str, data: str) -> None:
+        import json
+        import sys
+        sys.path.insert(0, "/home/simeon/src/bridgestan/python/")
+        import bridgestan as bs
+
+        bs.set_bridgestan_path("/home/simeon/src/bridgestan")
+
+        basedir = "/home/simeon/projects/periodic_timeseries_chainsail/"
+        data = np.loadtxt(data, delimiter=",", skiprows=1).T
+        data_dict = dict(x=data[0].tolist(), y=data[2].tolist(), n=len(data[0]))
+        import os
+        # os.environ['LD_LIBRARY_PATH'] = os.getenv('LD_LIBRARY_PATH') + ":/nix/store/cynvahq5hc4g8hg99vajx6p1gw7sqhm7-glibc-2.34-210/lib/"
+        self._model = bs.StanModel.from_stan_file(model, json.dumps(data_dict))
+        
+    def log_prob(self, x: np.ndarray) -> float:
+        return self._model.log_densiity(x, jacobian=False)
+
+    def log_prob_gradient(self, _: np.ndarray) -> None:
+        return self._model.log_density_gradient(x, jacobian=False)[1]
+
 if True:
     # Use httpstan to compile Stan model and evaluate log prob and its gradient
     from chainsail_helpers.pdf.stan import StanPDF
@@ -130,5 +152,6 @@ else:
     # Use the above, likely incorrect from-scratch implementation of the model
     pdf = ManualPDF("data.csv")
 
+# pdf = BridgeStanPDF("chainsail_compatible_model.stan", data="data.csv")
     
 initial_states = np.array([-2.13, 1.738, 0.0142, 1.418])
