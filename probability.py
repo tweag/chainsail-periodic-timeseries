@@ -5,6 +5,8 @@ https://discourse.mc-stan.org/t/ideas-for-modelling-a-periodic-timeseries/22038
 from dataclasses import dataclass
 
 import numpy as np
+import sys
+sys.path.insert(0, "/home/simeon/projects/tweag/chainsail-resources/chainsail_helpers/")
 
 from chainsail_helpers.pdf import PDF
 

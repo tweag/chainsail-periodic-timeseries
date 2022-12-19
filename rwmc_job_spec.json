@@ -1,5 +1,5 @@
 {
-    "tempered_dist_family": "boltzmann",
+    "tempered_dist_family": "likelihood_tempered",
     "probability_definition": "wedon'tneedthat",
     "max_replicas": 20,
     "initial_number_of_replicas": 7,
@@ -7,7 +7,7 @@
         "minimum_beta": 0.00001
     },
     "optimization_parameters": {
-        "optimization_quantity_target": 0.2,
+        "optimization_quantity_target": 0.4,
 	"decrement": 0.00001,
 	"min_param": 0.00001
     },
